@@ -1,0 +1,141 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Detail Pemesanan: @Model.Rows[0][0]</h2>
+
+
+@if (@Model.Rows[0]["Status"].ToString() == "Req" && Session["type"].ToString() != "Admin")
+{
+    <div style="padding-bottom: 10px">
+        @if (@Model.Rows[0]["Bukti"].ToString() == "")
+        {
+            <a class="btn btn-sm btn-success" href="@Url.Action("Bukti", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+                <i class="glyphicon glyphicon-plus"></i>
+                Tambahkan Bukti Pembayaran
+            </a>
+
+            <a class="btn btn-sm btn-info" href="@Url.Action("Edit", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+                <i class="glyphicon glyphicon-edit"></i>
+                Perbaharui Pesanan
+            </a>
+            <a class="btn btn-sm btn-danger" href="@Url.Action("Batalkan", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+                <i class="glyphicon glyphicon-remove"></i>
+                Batalkan Pesanan
+            </a>
+        }
+    </div>
+}
+@if (Session["type"].ToString() == "Admin" && Model.Rows[0]["Status"].ToString() == "Req")
+{
+    <div style="padding-bottom: 10px">
+        @if (Model.Rows[0]["Bukti"].ToString() != "")
+        {
+            <a class="btn btn-sm btn-success" href="@Url.Action("Konfirmasi", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+                <i class="glyphicon glyphicon-check"></i>
+                Konfirmasi
+            </a>
+        }
+
+        @if (Model.Rows[0]["Bukti"].ToString() == "")
+        {
+            <a class="btn btn-sm btn-danger" href="@Url.Action("Tolak", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+                <i class="glyphicon glyphicon-remove"></i>
+                Tolak
+            </a>
+        }
+
+    </div>
+}
+@if (Session["id"] != null && Model.Rows[0]["Status"].ToString() == "Acc")
+{
+    <div style="padding-bottom: 10px">
+        <a class="btn btn-sm btn-info" href="@Url.Action("printPDF", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+            <i class="glyphicon glyphicon-file"></i>
+            Export Pemesanan
+        </a>
+    </div>
+    if (TempData["status"] != null)
+    {
+        <div class="alert alert-dismissible alert-success" style="opacity: 0.8">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @TempData["status"]
+        </div>
+    }
+
+}
+
+<div>
+    @{
+        var harga = Convert.ToInt32(Convert.ToInt32(Model.Rows[0][8]) * Convert.ToInt32(Model.Rows[0]["Harga"])) / 60;
+    }
+    <dl class="dl-horizontal">
+        <dt>Nomor Pemesanan</dt>
+        <dd>@Model.Rows[0][0]</dd>
+
+        <dt>Nama Pemesan</dt>
+        <dd>@Model.Rows[0][2] @Model.Rows[0][3]</dd>
+
+        <dt>Tanggal Pemesanan</dt>
+        <dd>@(((DateTime)Model.Rows[0]["TanggalPemesanan"]).ToString("dd MMMM yyyy"))</dd>
+
+        <dt>Lapangan</dt>
+        <dd>@Model.Rows[0]["NamaLapangan"] - Rp @Model.Rows[0]["Harga"],00/jam</dd>
+
+        <dt>Waktu Pemakaian</dt>
+        <dd>@(((DateTime)Model.Rows[0][5]).ToString("dd MMMM yyyy")) | @(((DateTime)Model.Rows[0]["JamMulai"]).ToString("HH:mm")) - @(((DateTime)Model.Rows[0]["JamSelesai"]).ToString("HH:mm"))</dd>
+
+        <dt>Biaya</dt>
+        <dd>Rp @harga,00</dd>
+
+        <dt>Status Pesanan</dt>
+        <dd>
+            @if (@Model.Rows[0]["Status"].ToString() == "Req")
+            {
+                <span class="label label-warning">Request</span>
+            }
+            else if (@Model.Rows[0]["Status"].ToString() == "Acc")
+            {
+                <span class="label label-success">Accepted</span>
+            }
+            else if (@Model.Rows[0]["Status"].ToString() == "Rej")
+            {
+                <span class="label label-danger">Rejected</span>
+            }
+            else if (@Model.Rows[0]["Status"].ToString() == "Can")
+            {
+                <span class="label label-danger">Canceled</span>
+            }
+        </dd>
+
+        <dt>Bukti Pembayaran</dt>
+        <dd>
+
+            @if (@Model.Rows[0]["Bukti"].ToString() == "")
+            {
+                <i>
+                    Tidak Ada<br />
+                    @if (Session["type"].ToString() == "Pelanggan" && @Model.Rows[0]["Status"].ToString() == "Req")
+                    {
+                        <small>
+                            Silahkan lakukan transfer ke rekening yang telah ditentukan.<br />
+                            Lihat di menu "Kontak"
+                        </small>
+                    }
+                </i>
+            }
+            else
+            {
+                <img src="~/Bukti/@Model.Rows[0]["Bukti"]" width="500px" />
+            }
+        </dd>
+        @if (Model.Rows[0]["Status"].ToString() == "Req" && Model.Rows[0]["Bukti"].ToString() != "")
+            {
+            <dd><a class="btn btn-xs btn-info" href="@Url.Action("Bukti","Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">Perbaharui Bukti Pembayaran</a></dd>
+        }
+
+    </dl>
+
+
+</div>

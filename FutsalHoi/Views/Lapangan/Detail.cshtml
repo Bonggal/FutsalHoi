@@ -1,0 +1,52 @@
+﻿@model FutsalHoi.Models.LapanganModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Html.DisplayFor(model => model.NamaLapangan)</h2>
+
+<div>
+    @if (Session["id"] != null && Session["type"].ToString() == "Admin")
+    {
+    <a class="btn btn-sm btn-info" href="@Url.Action("Edit","Lapangan",new {@id=@Html.DisplayFor(model => model.IDLapangan) })"><i class="glyphicon glyphicon-edit"></i> Ubah</a>
+    <a class="btn btn-sm btn-danger" href="@Url.Action("Delete","Lapangan",new {@id=@Html.DisplayFor(model => model.IDLapangan) })" onclick="return confirm('Apakah Anda yakin ingin menghapus lapangan ini?');"><i class="glyphicon glyphicon-trash"></i> Hapus</a>
+    }
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NamaLapangan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NamaLapangan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Harga)
+        </dt>
+
+        <dd>
+            Rp @Html.DisplayFor(model => model.Harga),00 /jam
+        </dd>
+
+        <dt>
+            Ukuran
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Panjang) x @Html.DisplayFor(model => model.Lebar) meter
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Keterangan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Keterangan)
+        </dd>
+
+    </dl>
+</div>

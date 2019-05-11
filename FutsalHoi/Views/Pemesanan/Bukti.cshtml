@@ -1,0 +1,36 @@
+﻿@model FutsalHoi.Models.PemesananModel
+
+@{
+    ViewBag.Title = "Bukti";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bukti Pembayaran</h2>
+
+@using (Html.BeginForm("Bukti", "Pemesanan", FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Masukkan Bukti Pembayaran</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" name="IDPemesanan" value="@TempData["IDPemesanan"].ToString()" />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Bukti, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!--<input class="form-control" type="file" name="buktiPembayaran"/>-->
+                <input class="form-control" type="file" name="buktiPembayaran" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kirim" class="btn btn-sm btn-success" />
+                <a class="btn btn-sm btn-danger" href="@Url.Action("Detail","Pemesanan", new {@id = TempData["IDPemesanan"]})">Batal</a>
+            </div>
+        </div>
+    </div>
+}

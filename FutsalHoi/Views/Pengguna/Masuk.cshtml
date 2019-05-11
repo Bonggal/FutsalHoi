@@ -1,0 +1,49 @@
+﻿@model FutsalHoi.Models.PenggunaModel
+@{
+    ViewBag.Title = "Masuk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Masuk</h2>
+<div class="row">
+    <div class="col-md-12">
+        <section id="loginForm">
+            @using (Html.BeginForm("Masuk", "Pengguna", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Gunakan akun untuk masuk.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Email</label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
+                        <!--<input class="form-control" type="email" />-->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Kata Sandi</label>
+                    <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.KataSandi, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Masuk" class="btn btn-sm btn-success" />
+                    </div>
+                </div>
+
+                <p>
+                    @Html.ActionLink("Belum punya akun?", "Daftar", "Pengguna")
+                </p>
+
+            }
+        </section>
+    </div>
+</div>
+
+

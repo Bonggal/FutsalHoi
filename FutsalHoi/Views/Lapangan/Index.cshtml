@@ -1,0 +1,41 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lapangan</h2>
+@if (Session["id"] != null && Session["type"].ToString() == "Admin")
+{
+<div style="padding-bottom: 10px">
+    <a class="btn btn-sm btn-success" href="@Url.Action("Create", "Lapangan")">
+        <i class="glyphicon glyphicon-plus"></i> 
+        Lapangan Baru
+    </a>
+</div>
+}   
+<table id="lapangan" class="table table-striped table-bordered">
+    <tr>
+        <th width="30%">Nama Lapangan</th>
+        <th width="15%">Ukuran</th>
+        <th width="30%">Harga (per jam)</th>
+    </tr>
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+        <tr>
+            <td>@Model.Rows[i][1]</td>
+            <td>@Model.Rows[i][3] x @Model.Rows[i][4] m</td>
+            <td>Rp. @Model.Rows[i][2],00</td>
+            <td style="text-align:center">
+                <a class="btn btn-xs btn-info" href="@Url.Action("Detail","Lapangan",new {@id=Model.Rows[i][0] })"><i class="glyphicon glyphicon-list-alt"></i> Lihat</a>
+@if (Session["id"] != null && Session["type"].ToString() == "Admin") { 
+                <a class="btn btn-xs btn-info" href="@Url.Action("Edit","Lapangan",new {@id=Model.Rows[i][0] })"><i class="glyphicon glyphicon-edit"></i> Ubah</a>
+               <!--<a class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus lapangan ini?');" href="@Url.Action("Delete","Lapangan",new {@id=Model.Rows[i][0] })"><i class="glyphicon glyphicon-trash"></i> Hapus</a>--> 
+            }
+            </td>
+        </tr>
+    }
+</table>
+
+
+

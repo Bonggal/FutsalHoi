@@ -66,6 +66,6 @@ D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\bin\Microsoft
 D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\bin\Microsoft.Owin.Security.Google.xml
 D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\bin\Microsoft.Owin.Security.Twitter.xml
 D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\obj\Debug\FutsalHoi.csprojResolveAssemblyReference.cache
 D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\obj\Debug\FutsalHoi.dll
 D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\obj\Debug\FutsalHoi.pdb
-D:\01. Kuliah\00. SEMESTER 8\03. RPLBK\Project\FutsalHoi\FutsalHoi\obj\Debug\FutsalHoi.csprojResolveAssemblyReference.cache

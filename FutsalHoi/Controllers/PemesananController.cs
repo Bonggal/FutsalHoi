@@ -21,23 +21,51 @@ namespace FutsalHoi.Controllers
         // GET: Pemesanan
         public ActionResult Index()
         {
-            
+            // Login check
             DataTable dtblPemesanan = new DataTable();
             if (Session["id"] == null)
             {
                 return RedirectToAction("Masuk", "Pengguna");
             }
+
+            //If role is admin
             else if (Session["type"].ToString() == ("Admin"))
             {
-            
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            {
-                sqlCon.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PemesananLapangan order by TanggalPemesanan DESC", sqlCon);
-                sqlDa.Fill(dtblPemesanan);
+
+                var result = new twoDatatable();
+
+                DataTable request = new DataTable();
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                {
+                    sqlCon.Open();
+                    SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PemesananLapangan WHERE Status = 'Req' order by TanggalPemesanan DESC", sqlCon);
+                    sqlDa.Fill(request);
+                }
+
+                DataTable accept = new DataTable();
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                {
+                    sqlCon.Open();
+                    SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PemesananLapangan WHERE Status = 'Acc' order by TanggalPemesanan DESC", sqlCon);
+                    sqlDa.Fill(accept);
+                }
+
+                DataTable cancel = new DataTable();
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                {
+                    sqlCon.Open();
+                    SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PemesananLapangan WHERE Status = 'Can' OR Status = 'Rej' order by TanggalPemesanan DESC", sqlCon);
+                    sqlDa.Fill(cancel);
+                }
+
+                result.First = request;
+                result.Second = accept;
+                result.Third = cancel;
+
+            return View(result);
             }
-            return View(dtblPemesanan);
-            }
+
+            // If role is pelanggan
             else
             {
                 DataTable all = new DataTable();
@@ -434,7 +462,7 @@ namespace FutsalHoi.Controllers
             string filepath = Server.MapPath("~");
             string filename = "Order-" + id + "-" + data.Rows[0]["NomorPemesanan"] + ".pdf";
             Document document = new Document(PageSize.A4, 70, 70, 70, 70);
-            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filepath + "Content\\"+filename, FileMode.Create));
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(filepath + "PDF Form Pemesanan\\" + filename, FileMode.Create));
             
             // Fonts
             var titleFont = FontFactory.GetFont("Arial", 12, Font.BOLD);

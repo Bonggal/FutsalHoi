@@ -30,7 +30,7 @@ namespace FutsalHoi.Controllers
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
             {
                 sqlCon.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM Pengguna WHERE JenisAkun = 'Pelanggan'", sqlCon);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM Pengguna WHERE JenisAkun = 'Pelanggan' Order By NamaDepan ASC", sqlCon);
                 sqlDa.Fill(dtblPengguna);
             }
             return View(dtblPengguna);
@@ -71,8 +71,13 @@ namespace FutsalHoi.Controllers
 
         // POST: Pengguna/Create
         [HttpPost]
-        public ActionResult Daftar(PenggunaModel penggunaModel)
+        public ActionResult Daftar(PenggunaModel penggunaModel, string password2)
         {
+            if(penggunaModel.KataSandi.ToString() != password2)
+            {
+                TempData["Error"] = "Pastikan kata sandi yang anda masukkan sama.";
+                return RedirectToAction("Daftar", "Pengguna");
+            }
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
             {
                 sqlCon.Open();
@@ -115,10 +120,12 @@ namespace FutsalHoi.Controllers
                 Session["id"] = Convert.ToInt32(dtblPengguna.Rows[0][0].ToString());
                 Session["name"] = dtblPengguna.Rows[0][2].ToString()+" "+ dtblPengguna.Rows[0][3].ToString();
                 Session["type"] = dtblPengguna.Rows[0][1].ToString();
+                
                 return RedirectToAction("Index", "Home");
             }
             else
-                return RedirectToAction("Masuk");
+                TempData["Error"] = "Email atau kata sandi tidak tepat";
+            return RedirectToAction("Masuk");
         }
 
         [HttpGet]
@@ -127,7 +134,7 @@ namespace FutsalHoi.Controllers
             Session.Remove("id");
             Session.Remove("name");
             Session.Remove("type");
-            //Session.Remove("ErrorMessage");
+
             return RedirectToAction("Index", "Home");
         }
 

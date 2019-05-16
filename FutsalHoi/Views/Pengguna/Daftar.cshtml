@@ -14,12 +14,19 @@
     <div class="form-horizontal">
         <h4>Buat akun baru.</h4>
         <hr />
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-dismissible alert-danger" style="opacity: 0.8">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                @TempData["Error"]
+            </div>
+        }
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
         <div class="form-group">
             @Html.LabelFor(model => model.NamaDepan, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NamaDepan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NamaDepan, new { htmlAttributes = new { @class = "form-control" , @required =true} })
                 @Html.ValidationMessageFor(model => model.NamaDepan, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -27,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NamaBelakang, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NamaBelakang, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NamaBelakang, new { htmlAttributes = new { @class = "form-control", @required = true } })
                 @Html.ValidationMessageFor(model => model.NamaBelakang, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TanggalLahir, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TanggalLahir, new { htmlAttributes = new { @class = "form-control", @type="Date" } })
+                @Html.EditorFor(model => model.TanggalLahir, new { htmlAttributes = new { @class = "form-control", @type="Date", @required = true } })
                 @Html.ValidationMessageFor(model => model.TanggalLahir, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type="Email" } })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type="Email", @required = true } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -51,11 +58,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.KataSandi, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.KataSandi, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                @Html.EditorFor(model => model.KataSandi, new { htmlAttributes = new { @class = "form-control", type = "password", @required = true } })
                 @Html.ValidationMessageFor(model => model.KataSandi, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="control-label col-md-2">Ketik Ulang Kata Sandi</label>
+            <div class="col-md-10">
+                <input type="password" name="password2" required class="form-control" />
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Daftar" class="btn btn-sm btn-success" />

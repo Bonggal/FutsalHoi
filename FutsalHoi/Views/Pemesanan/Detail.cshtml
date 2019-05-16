@@ -6,7 +6,7 @@
 <h2>Detail Pemesanan: @Model.Rows[0][0]</h2>
 
 
-@if (@Model.Rows[0]["Status"].ToString() == "Req" && Session["type"].ToString() != "Admin")
+@if (@Model.Rows[0]["Status"].ToString() == "Req" && Session["type"].ToString() != "Admin" && Convert.ToDateTime(Model.Rows[0]["Tanggal"])>DateTime.Now)
 {
     <div style="padding-bottom: 10px">
         @if (@Model.Rows[0]["Bukti"].ToString() == "")
@@ -20,7 +20,7 @@
                 <i class="glyphicon glyphicon-edit"></i>
                 Perbaharui Pesanan
             </a>
-            <a class="btn btn-sm btn-danger" href="@Url.Action("Batalkan", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+            <a class="btn btn-sm btn-danger" href="@Url.Action("Batalkan", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
                 <i class="glyphicon glyphicon-remove"></i>
                 Batalkan Pesanan
             </a>
@@ -30,9 +30,10 @@
 @if (Session["type"].ToString() == "Admin" && Model.Rows[0]["Status"].ToString() == "Req")
 {
     <div style="padding-bottom: 10px">
-        @if (Model.Rows[0]["Bukti"].ToString() != "")
+        @if (Model.Rows[0]["Bukti"].ToString() != "" && Convert.ToDateTime(Model.Rows[0]["Tanggal"]) > DateTime.Now)
         {
-            <a class="btn btn-sm btn-success" href="@Url.Action("Konfirmasi", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+            <a class="btn btn-sm btn-success" href="@Url.Action("Konfirmasi", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })"
+               onclick="return confirm('Apakah Anda yakin ingin menyetujui pesanan ini?');">
                 <i class="glyphicon glyphicon-check"></i>
                 Konfirmasi
             </a>
@@ -40,7 +41,8 @@
 
         @if (Model.Rows[0]["Bukti"].ToString() == "")
         {
-            <a class="btn btn-sm btn-danger" href="@Url.Action("Tolak", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">
+            <a class="btn btn-sm btn-danger" href="@Url.Action("Tolak", "Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })"
+               onclick="return confirm('Apakah Anda yakin ingin membatalkan ini?');">
                 <i class="glyphicon glyphicon-remove"></i>
                 Tolak
             </a>
@@ -107,6 +109,10 @@
             {
                 <span class="label label-danger">Canceled</span>
             }
+            @if (Convert.ToDateTime(Model.Rows[0]["Tanggal"])<DateTime.Now && Model.Rows[0]["Status"].ToString() == "Req")
+            {
+                <i style="color: red"><small>Pesanan telah kadaluarsa</small></i>
+            }            
         </dd>
 
         <dt>Bukti Pembayaran</dt>
@@ -115,7 +121,7 @@
             @if (@Model.Rows[0]["Bukti"].ToString() == "")
             {
                 <i>
-                    Tidak Ada<br />
+                    Belum Ada<br />
                     @if (Session["type"].ToString() == "Pelanggan" && @Model.Rows[0]["Status"].ToString() == "Req")
                     {
                         <small>
@@ -130,7 +136,7 @@
                 <img src="~/Bukti/@Model.Rows[0]["Bukti"]" width="500px" />
             }
         </dd>
-        @if (Model.Rows[0]["Status"].ToString() == "Req" && Model.Rows[0]["Bukti"].ToString() != "")
+        @if (Model.Rows[0]["Status"].ToString() == "Req" && Model.Rows[0]["Bukti"].ToString() != "" && Session["type"].ToString() == "Pelanggan")
             {
             <dd><a class="btn btn-xs btn-info" href="@Url.Action("Bukti","Pemesanan", new { @id = Model.Rows[0]["IDPemesanan"] })">Perbaharui Bukti Pembayaran</a></dd>
         }

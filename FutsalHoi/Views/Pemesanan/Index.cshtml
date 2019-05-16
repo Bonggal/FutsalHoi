@@ -85,51 +85,150 @@
                         <td>@Model.Second.Rows[i][6].ToString("HH:mm") - @Model.Second.Rows[i][7].ToString("HH:mm")</td>
                     </tr>
                 }
-</table>
+            </table>
         </div>
     </div>
 }
 
+<!-- FOR ADMIN -->
+
 @if (Session["type"].ToString() == "Admin")
 {
-    <table id="lapangan" class="table table-striped table-bordered">
-        <tr>
-            <th>Nomor Pemesanan</th>
-            <th>Nama Pemesan</th>
-            <th>Tanggal Pemakaian</th>
-            <th>Lapangan</th>
-            <th>Harga</th>
-            <th width="150px">Status Pesanan</th>
-        </tr>
-        @for (int i = 0; i < Model.Rows.Count; i++)
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#req" data-toggle="tab" aria-expanded="false">Requested</a></li>
+        <li class=""><a href="#acc" data-toggle="tab" aria-expanded="true">Accepted</a></li>
+        <li class=""><a href="#can" data-toggle="tab" aria-expanded="true">Canceled</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="req" style="padding-top: 10px">
+            <table id="lapangan" class="table table-striped table-bordered">
+                <tr>
+                    <th>Nomor Pemesanan</th>
+                    <th>Nama Pemesan</th>
+                    <th>Tanggal Pemakaian</th>
+                    <th>Lapangan</th>
+                    <th>Harga</th>
+                    <th width="150px">Status Pesanan</th>
+                </tr>
+                @for (int i = 0; i < Model.First.Rows.Count; i++)
                 {
-                    var harga = Convert.ToInt32(Model.Rows[i][8] * Model.Rows[i]["Harga"]) / 60;
-            <tr>
-                <td>@Model.Rows[i][0]</td>
-                <td>@Model.Rows[i][2] @Model.Rows[i][3]</td>
-                <td>@Model.Rows[i][5].ToString("dd MMMM yyyy")</td>
-                <!--<td>@Model.Rows[i][6].ToString("HH:mm") - @Model.Rows[i][7].ToString("HH:mm")</td>-->
-                <td>@Model.Rows[i][11]</td>
-                <td>@harga</td>
-                <td style="text-align: center">
-                    @if (@Model.Rows[i]["Status"].ToString() == "Req")
+                    var harga = Convert.ToInt32(Model.First.Rows[i][8] * Model.First.Rows[i]["Harga"]) / 60;
+                    <tr>
+                        <td>@Model.First.Rows[i][0]</td>
+                        <td>@Model.First.Rows[i][2] @Model.First.Rows[i][3]</td>
+                        <td>@Model.First.Rows[i][5].ToString("dd MMMM yyyy")</td>
+                        <!--<td>@Model.First.Rows[i][6].ToString("HH:mm") - @Model.First.Rows[i][7].ToString("HH:mm")</td>-->
+                        <td>@Model.First.Rows[i][11]</td>
+                        <td>@harga</td>
+                        <td style="text-align: center">
+                            @if (@Model.First.Rows[i]["Status"].ToString() == "Req")
                     {
-                        <span class="label label-warning">Request</span>
-                    }
-                    else if (@Model.Rows[i]["Status"].ToString() == "Acc")
+                                <span class="label label-warning">Request</span>
+                            }
+                            else if (@Model.First.Rows[i]["Status"].ToString() == "Acc")
+                            {
+                                <span class="label label-success">Accepted</span>
+                            }
+                            else if (@Model.First.Rows[i]["Status"].ToString() == "Rej")
+                            {
+                                <span class="label label-danger">Rejected</span>
+                            }
+                            else if (@Model.First.Rows[i]["Status"].ToString() == "Can")
+                            {
+                                <span class="label label-danger">Canceled</span>
+                            }
+                        <td style="text-align: center"><a class="btn btn-xs btn-info" href="@Url.Action("Detail","Pemesanan",new {@id=Model.First.Rows[i][14] })"><i class="glyphicon glyphicon-list-alt"></i> Lihat</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="acc" style="padding-top: 10px">
+            <table id="lapangan" class="table table-striped table-bordered">
+                <tr>
+                    <th>Nomor Pemesanan</th>
+                    <th>Nama Pemesan</th>
+                    <th>Tanggal Pemakaian</th>
+                    <th>Lapangan</th>
+                    <th>Harga</th>
+                    <th width="150px">Status Pesanan</th>
+                </tr>
+                @for (int i = 0; i < Model.Second.Rows.Count; i++)
+                {
+                    var harga = Convert.ToInt32(Model.Second.Rows[i][8] * Model.Second.Rows[i]["Harga"]) / 60;
+                    <tr>
+                        <td>@Model.Second.Rows[i][0]</td>
+                        <td>@Model.Second.Rows[i][2] @Model.Second.Rows[i][3]</td>
+                        <td>@Model.Second.Rows[i][5].ToString("dd MMMM yyyy")</td>
+                        <td>@Model.Second.Rows[i][11]</td>
+                        <td>@harga</td>
+                        <td style="text-align: center">
+                            @if (@Model.Second.Rows[i]["Status"].ToString() == "Req")
                     {
-                        <span class="label label-success">Accepted</span>
-                    }
-                    else if (@Model.Rows[i]["Status"].ToString() == "Rej")
+                                <span class="label label-warning">Request</span>
+                            }
+                            else if (@Model.Second.Rows[i]["Status"].ToString() == "Acc")
+                            {
+                                <span class="label label-success">Accepted</span>
+                            }
+                            else if (@Model.Second.Rows[i]["Status"].ToString() == "Rej")
+                            {
+                                <span class="label label-danger">Rejected</span>
+                            }
+                            else if (@Model.Second.Rows[i]["Status"].ToString() == "Can")
+                            {
+                                <span class="label label-danger">Canceled</span>
+                            }
+                        <td style="text-align: center"><a class="btn btn-xs btn-info" href="@Url.Action("Detail","Pemesanan",new {@id=Model.Second.Rows[i][14] })"><i class="glyphicon glyphicon-list-alt"></i> Lihat</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="can" style="padding-top: 10px">
+            <table id="lapangan" class="table table-striped table-bordered">
+                <tr>
+                    <th>Nomor Pemesanan</th>
+                    <th>Nama Pemesan</th>
+                    <th>Tanggal Pemakaian</th>
+                    <th>Lapangan</th>
+                    <th>Harga</th>
+                    <th width="150px">Status Pesanan</th>
+                </tr>
+                @for (int i = 0; i < Model.Third.Rows.Count; i++)
+                {
+                    var harga = Convert.ToInt32(Model.Third.Rows[i][8] * Model.Third.Rows[i]["Harga"]) / 60;
+                    <tr>
+                        <td>@Model.Third.Rows[i][0]</td>
+                        <td>@Model.Third.Rows[i][2] @Model.Third.Rows[i][3]</td>
+                        <td>@Model.Third.Rows[i][5].ToString("dd MMMM yyyy")</td>
+                        <!--<td>@Model.Third.Rows[i][6].ToString("HH:mm") - @Model.Third.Rows[i][7].ToString("HH:mm")</td>-->
+                        <td>@Model.Third.Rows[i][11]</td>
+                        <td>@harga</td>
+                        <td style="text-align: center">
+                            @if (@Model.Third.Rows[i]["Status"].ToString() == "Req")
                     {
-                        <span class="label label-danger">Rejected</span>
-                    }
-                    else if (@Model.Rows[i]["Status"].ToString() == "Can")
-                    {
-                        <span class="label label-danger">Canceled</span>
-                    }
-                <td style="text-align: center"><a class="btn btn-xs btn-info" href="@Url.Action("Detail","Pemesanan",new {@id=Model.Rows[i][14] })"><i class="glyphicon glyphicon-list-alt"></i> Lihat</a></td>
-            </tr>
-        }
-    </table>
+                                <span class="label label-warning">Request</span>
+                            }
+                            else if (@Model.Third.Rows[i]["Status"].ToString() == "Acc")
+                            {
+                                <span class="label label-success">Accepted</span>
+                            }
+                            else if (@Model.Third.Rows[i]["Status"].ToString() == "Rej")
+                            {
+                                <span class="label label-danger">Rejected</span>
+                            }
+                            else if (@Model.Third.Rows[i]["Status"].ToString() == "Can")
+                            {
+                                <span class="label label-danger">Canceled</span>
+                            }
+                        <td style="text-align: center"><a class="btn btn-xs btn-info" href="@Url.Action("Detail","Pemesanan",new {@id=Model.Third.Rows[i][14] })"><i class="glyphicon glyphicon-list-alt"></i> Lihat</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+
 }
